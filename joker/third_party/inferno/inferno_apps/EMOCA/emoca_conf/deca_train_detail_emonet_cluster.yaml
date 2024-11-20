@@ -1,0 +1,13 @@
+defaults:
+  - data/datasets: detail_data_cluster
+  - data/augmentations: none
+  - model/paths : cluster
+  - model/settings : detail_train_emonet
+  - model/sizes : default
+  - model/neural_rendering : none
+  - model/flame_tex: bfm
+  - learning/optimizer: finetune_adam_coarse
+  - learning/batching: _32gb
+  - learning/callbacks: early_stopping
+  - learning/logging: wandb
+  - inout: cluster

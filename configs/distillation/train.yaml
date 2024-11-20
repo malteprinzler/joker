@@ -1,0 +1,108 @@
+name: example_data_0
+tag: example_data  # group of experiments
+exp_root_dir: "experiments/distillation"
+mode: train
+seed: 0
+debug: False
+#  resume: /path/to/ckpt/to/resume/from
+data_type: "joker-datamodule"
+data:
+  root: "data/DISTILLATION_EXAMPLE_DATA/000/sequences/CAM_SWEEP/frame_00000"
+  val_root: "data/DISTILLATION_EXAMPLE_DATA/000/sequences/VAL/frame_00000"
+  caption_dir: "blip_captions"
+  batch_size: [ 64, 64, 64, 64, 64 ] # must be dividable by n_view
+  patch_size: 64
+  # 0-4999: 64x64, >=5000: 256x256
+  width: [ 64 ,128, 256, 384, 512 ]
+  height: [ 64 ,128, 256, 384, 512 ]
+  resolution_milestones: [ 200, 3000, 4500, 7000  ]
+
+system_type: "imagedream-system"
+system:
+  update_steps_per_target_update: 130
+  geometry_type: "implicit-volume"
+  geometry:
+    radius: 0.25
+    normal_type: null
+    density_bias: "blob_magic3d"
+    density_activation: softplus
+    density_blob_scale: 10.
+    density_blob_std: 0.125
+
+    pos_encoding_config:
+      otype: HashGrid
+      n_levels: 16
+      n_features_per_level: 2
+      log2_hashmap_size: 19
+      base_resolution: 16
+      per_level_scale: 1.447269237440378 # max resolution 4096
+
+  material_type: "no-material"
+  material:
+    n_output_dims: 3
+    color_activation: sigmoid
+
+  background_type: "neural-environment-map-background"
+  background:
+    color_activation: sigmoid
+    random_aug: false
+    share_aug_bg: false
+
+  renderer_type: "nerf-volume-renderer"
+  renderer:
+    radius: ${...system.geometry.radius}
+    num_samples_per_ray: 200
+
+  prompt_processor_type: "stable-diffusion-prompt-processor"
+  prompt_processor:
+    pretrained_model_name_or_path: "runwayml/stable-diffusion-v1-5"
+
+  guidance_type: "joker-guidance"
+  guidance:
+    ckpt_path: assets/joker/pretrained/bfm_ft_NersembleCelebvtext_230000.bin
+    guidance_scale: 19.0
+    denoising_steps: 1
+    ddim_steps: 100
+    last_ddim_steps_at_once: 40
+    w_lpips: 1.
+
+  loggers:
+    wandb:
+      enable: true
+      project: "debug_threestudio"
+      name: ${....name}
+
+  loss:
+    lambda_target: 1.
+    lambda_orient: 0.
+    lambda_sparsity: 1e-6
+    lambda_opaque: 0.
+    lambda_z_variance: 0.
+
+  optimizer:
+    name: AdamW
+    args:
+      betas: [0.9, 0.99]
+      eps: 1.e-15
+    params:
+      geometry.encoding:
+        lr: 0.01
+      geometry.density_network:
+        lr: 0.001
+      geometry.feature_network:
+        lr: 0.001
+      background:
+        lr: 0.001
+
+trainer:
+  max_steps: 20000
+  log_every_n_steps: 10
+  num_sanity_val_steps: 0
+  val_check_interval: 1000
+  enable_progress_bar: true
+  precision: bf16-mixed
+
+checkpoint:
+  save_last: True
+  save_top_k: 0
+#  every_n_train_steps: ${trainer.val_check_interval}

@@ -1,0 +1,13 @@
+# config script for joker/prior/inference.py
+
+# general
+model_ckpt: assets/joker/pretrained/bfm_ft_NersembleCelebvtext_230000.bin
+input_dir: data/PRIOR_EXAMPLE_DATA
+output_dir: experiments/prior/EXAMPLE_PREDICTIONS
+
+load_model: ${model_ckpt}
+val_dataset:
+  _target: joker.prior.data.dataset.FolderDataset
+  _kwargs:
+    root: ${input_dir}
+    nsamples: -1

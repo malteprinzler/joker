@@ -1,0 +1,16 @@
+defaults:
+  - data/datasets: mead_pseudo_gt
+  - data/augmentations: none
+  # - model/paths : cluster
+  - model/settings : most_frequent_emo
+  - model/output@model/output : basic_expressions
+  - model/feature_extractor@model/feature_extractor: none
+  - learning/losses: cross_entropy
+  - learning/optimizer: adam
+  # - learning/batching@learning/batching: default
+  - learning/batching@learning/batching: fixed_length
+  # - learning/callbacks: early_stopping
+  - learning/callbacks: none
+  - learning/logging: wandb
+  # - learning/logging: none
+  - inout: cluster

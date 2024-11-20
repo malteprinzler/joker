@@ -1,0 +1,7 @@
+# @package learning
+eval: false
+batch_size: 1
+learning_rate: 0.008
+learning_rate_decay: 0.99
+weight_decay: 0.0005
+optimizer: Adam

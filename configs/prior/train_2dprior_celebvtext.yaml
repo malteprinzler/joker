@@ -1,0 +1,115 @@
+general:
+  name: "joker_2d_prior_celebvtext"
+  notes: ""
+  group: "prior"
+  project: "Joker"
+  debug: False
+
+train_kwargs:
+
+  # general
+  group: ${general.group}
+  project: ${general.project}
+  name: ${general.name}
+  notes: ${general.notes}
+  output_dir: experiments/${general.group}/${general.name}
+
+  # model
+  load_model: null
+  resume_from_checkpoint: latest
+
+  # trainable parameters
+  train_unet: True
+  train_controlnet: True
+  train_refunet: True
+
+  # logging
+  logger:
+    # wandb setting
+    project_name: ${train_kwargs.project}
+    init_kwargs:
+      "wandb":
+        tags:
+          - ${train_kwargs.group}
+        notes: ${train_kwargs.notes}
+        name: ${train_kwargs.name}
+        dir: ${train_kwargs.output_dir}
+        resume: True
+
+#    # tensorboard setting
+#    project_name: ""
+#    init_kwargs:
+#      tensorboard: {}
+
+  # dataset
+  train_dataset:
+    _target: joker.prior.data.dataset.JokerDataset
+    _kwargs:
+      root: "data/CELEBV_TEXT/PROCESSED_FRAMES_50K"
+      meta_fp: "data/CELEBV_TEXT/PROCESSED_FRAMES_50K/TRAIN_METAS.json"
+      normal_dir: "bfm_normals-512"
+      nsamples: 50000
+      caption_dir: blip_captions
+      uncondition_prob: .1
+  train_batch_size: 10
+  dataloader_num_workers: 4
+
+  # optimization
+  gradient_checkpointing: False
+  max_train_steps: 200000
+  num_train_epochs: 200000
+  learning_rate: 1e-5
+  unet_lr_scale: 1.0
+  checkpointing_steps: 20000
+  keep_interval: 20000
+  resubmit_interval: -1
+  train_text_encoder: False
+  allow_tf32: True
+  keep_only_last_checkpoint: True
+  seed: 42
+  lr_scheduler: constant
+  lr_warmup_steps: 500
+  disable_flashattention: True
+  scale_lr: False
+  adam_beta1: 0.9
+  adam_beta2: 0.999
+  adam_epsilon: 1e-08
+  adam_weight_decay: 1e-2
+  max_grad_norm: 1.0
+
+  # testing parameters
+  num_images_per_prompt: 1
+  neval: 50
+  val_dataset:
+    - name: CelebVText
+      _target: joker.prior.data.dataset.JokerDataset
+      _kwargs:
+        root: "data/CELEBV_TEXT/PROCESSED_FRAMES_50K"
+        meta_fp: "data/CELEBV_TEXT/PROCESSED_FRAMES_50K/VAL_METAS.json"
+        nsamples: -1
+        uncondition_prob: 0.
+        use_for_avg_quant: True  # weather or not this dataset should contribute to average for quantitative evaluation
+        deterministic: True
+    - name: NeRSemble
+      _target: joker.prior.data.dataset.NeRSembleDataset
+      _kwargs:
+        root: "data/NERSEMBLE/PROCESSED_FRAMES_EXPR_10K"
+        meta_fp: "data/NERSEMBLE/PROCESSED_FRAMES_EXPR_10K/VAL_METAS.json"
+        nsamples: -1
+        uncondition_prob: 0.
+        use_for_avg_quant: True  # weather or not this dataset should contribute to average for quantitative evaluation
+        deterministic: True
+
+  accelerator:
+    gradient_accumulation_steps: 1
+    mixed_precision: ${accelerate_kwargs.mixed_precision}
+    project_dir: ${train_kwargs.output_dir}
+
+  debug: ${general.debug}
+
+accelerate_kwargs:
+  mixed_precision: bf16
+  machine_rank: 0
+  num_machines: 1
+  main_process_port: 11135
+  num_processes: 8  # nr of gpus to train on

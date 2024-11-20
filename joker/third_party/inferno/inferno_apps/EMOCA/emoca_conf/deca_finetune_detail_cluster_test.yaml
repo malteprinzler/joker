@@ -1,0 +1,10 @@
+defaults:
+  - data/datasets: data_cluster
+  - data/augmentations: none
+  - model/paths : cluster
+  - model/settings : default_detail
+  - model/sizes : default
+  - model/neural_rendering : none
+  - model/flame_tex: bfm
+  - learning: finetune_adam_detail
+  - inout: cluster
