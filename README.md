@@ -30,6 +30,8 @@ cd joker
 conda env create -f environment.yaml  # this might take a while ...
 conda activate joker
 
+# in case gcc version 9 is not installed on your machine, follow https://askubuntu.com/questions/1140183/install-gcc-9-on-ubuntu-18-04 to install it
+
 # installing packages that require a bit more love
 export CUDA_HOME=$CONDA_PREFIX
 export GCC=gcc-9
@@ -152,6 +154,7 @@ Note that we conduct our experiments on an NVIDIA A100 80GB GPU (8 of them for t
 
 ## 2D Inference with the pretrained 2D Prior on preprocessed data
 <img src='media/prior_examples.jpg' style="height:300px"></img>
+- You can check out our gradio demo by running `python demo/2d_prior_demo/app.py`. If you prefer scripts, follow the steps below.
 - make sure you have downloaded the pretrained model weights and the preprocessed samples following the installation instructions
 - check the configuration in `configs/prior/inference_2dprior.yaml` and set the paths according to your needs
 - run 

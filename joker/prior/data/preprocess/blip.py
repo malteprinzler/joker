@@ -15,8 +15,8 @@ def init_blip_model():
     global blip2_model, blip2_processor
     if blip2_model is None:
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        blip2_processor = AutoProcessor.from_pretrained("Salesforce/blip2-opt-2.7b")
-        blip2_model = Blip2ForConditionalGeneration.from_pretrained("Salesforce/blip2-opt-2.7b", torch_dtype=torch.float16)
+        blip2_processor = AutoProcessor.from_pretrained("Salesforce/blip2-opt-2.7b", revision="51572668da0eb669e01a189dc22abe6088589a24")
+        blip2_model = Blip2ForConditionalGeneration.from_pretrained("Salesforce/blip2-opt-2.7b", torch_dtype=torch.float16, revision="51572668da0eb669e01a189dc22abe6088589a24")
         blip2_model.to(device).eval()
 
 

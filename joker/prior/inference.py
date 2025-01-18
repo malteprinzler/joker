@@ -49,8 +49,8 @@ def inference_on_dataset(model, dataset, output_dir, accelerator=None, neval=-1,
             generator = torch.Generator(accelerator.device).manual_seed(int(case_id))
         output_images = model.infer(
             prompt=batch["caption"],
-            control_map=batch["normal"],
-            ref_imgs=batch["ref_imgs"],
+            control_map=batch["normal"],  # Nx3xHxW, -1 ... +1
+            ref_imgs=batch["ref_imgs"],  # Nx1x3xHxW, 0 ... 1
             generator=generator,
             **inference_kwargs,
         )

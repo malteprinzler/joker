@@ -503,6 +503,9 @@ dependencies:
       - portalocker==2.10.1
       - pygments==2.18.0
       - rich==13.9.4
+      - gradio==4.8.0
+      - gradio_client==0.7.1
+      - fastapi==0.112.2
       - ./joker/third_party/Deep3DFaceRecon_pytorch/nvdiffrast
 variables:
   CXX: g++-9

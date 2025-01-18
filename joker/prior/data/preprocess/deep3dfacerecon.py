@@ -219,6 +219,7 @@ def predict_bfm_from_img(img_path, blur_pad=False, crop=False):
     generates bfm normal map given an input image path.
     if crop: crops the image according to Joker convention before generating normal map
     if blur_pad: blur-pads the image before cropping as in FFHQ to avoid black regions after cropping
+    img_path can also be np.ndarray HxWx3 0...255 RGB
 
     returns:
         - img: np.ndarray (512,512,3), 0 ... 255 (cropped) image
@@ -226,8 +227,11 @@ def predict_bfm_from_img(img_path, blur_pad=False, crop=False):
         - bbx_orig: bounding box of crop region on input image
         - head_coeffs: dict with bfm coefficients and other useful information
     """
-    img = Image.open(img_path).convert("RGB")
-    img = np.array(img)
+    if isinstance(img_path, np.ndarray):
+        img = img_path
+    else:
+        img = Image.open(img_path).convert("RGB")
+        img = np.array(img)
     hw_uncropped = img.shape[:2]
     lmks_uncropped = deep3dface.detect_lmks(img)
 
