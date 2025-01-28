@@ -153,7 +153,7 @@ Also, for 3D distillation other loggers are not implemented.
 Note that we conduct our experiments on an NVIDIA A100 80GB GPU (8 of them for training). If you use smaller GPUs you might have to reduce the batch size to avoid OOM errors. 
 
 ## 2D Inference with the pretrained 2D Prior on preprocessed data
-<img src='media/prior_examples.jpg' style="height:300px"></img>
+<img src='media/prior_examples.jpg' width=1024></img>
 - You can check out our gradio demo by running `python demo/2d_prior_demo/app.py`. If you prefer scripts, follow the steps below.
 - make sure you have downloaded the pretrained model weights and the preprocessed samples following the installation instructions
 - check the configuration in `configs/prior/inference_2dprior.yaml` and set the paths according to your needs
