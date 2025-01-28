@@ -48,6 +48,13 @@ def init_cam_sweep(ref_deep3dfacerecon, targ_deep3dfacerecon, prompt, out_dir, s
 
 
 def render_cam_sweep(out_dir, head_coeffs, angles, persc_proj, ndc_proj, h, w, scale_factor, relative_to_input_pose):
+    '''
+    camera convention:
+    - intrinsics: +x = right, +y = down, (0,0) lies at top left corner of top left pixel
+    - extrinsics: +x = right, +y = down, +z = look-at
+    - world: +x = left face side, +y = up, +z = towards camera rig
+
+    '''
     face_recon = deep3dface.model
 
     for j, (az, el) in enumerate(tqdm.tqdm(angles, total=len(angles))):

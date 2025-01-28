@@ -177,7 +177,15 @@ Note that we conduct our experiments on an NVIDIA A100 80GB GPU (8 of them for t
   ```
 - this will render out the distilled NeRF. By default, results are stored under `experiments/distillation/pretrained/pretrained_0_test/save/`
 
+## Interactive visualization of the distillation results
+
+<img width=1024px src="media/nerfstudio_screenshot.jpg">
+
+We provide a script for converting our distillation results into <a href="https://github.com/nerfstudio-project/nerfstudio/">nerfstudio</a>-compatible representations for interactive visualization. 
+We also provide some preprocessed examples. Please follow [these instructions](./demo/distillation_nerfstudio/README.md) for more details.  
+
 # 2D prior inference on your own data
+- You can check out our gradio demo by running `python demo/2d_prior_demo/app.py`. If you prefer scripts, follow the steps below.
 - To run the 2D prior on your own data, first create a folder containing reference and driving images with the following structure:
   ```
   000000_ref.jpg/png

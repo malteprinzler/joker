@@ -234,6 +234,10 @@ class JokerDataModuleConfig(RandomCameraDataModuleConfig):
 
 
 class JokerParentDataset:
+    '''
+    camera convention:
+    - pixel coordinates: using opengl convention: +x = right, +y = up, -z = look-at, (0,0) lies at bottom left corner of bottom left pixel
+    '''
     device = None
     cfg = None
     samples = list()
