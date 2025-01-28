@@ -5,17 +5,17 @@ sys.path.append(str(Path(__file__).parents[2]))
 import numpy as np
 import torch
 import time
-# import pycharm_debug
+from argparse import ArgumentParser
 
 from PIL import Image
 from joker.prior.data.preprocess.deep3dfacerecon import deep3dface, predict_bfm_from_img
 from joker.prior.data.preprocess.blip import predict_img_caption, naive_caption_reenactment
 from joker.prior.models import Joker2DPrior
 
-
 joker_prior = None
 device = torch.device("cuda")
 CKPT_PATH = "assets/joker/pretrained/bfm_ft_NersembleCelebvtext_230000.bin"
+AUTO_CAPTIONING = False
 
 def reenact_img(reference_image:np.ndarray=None, crop_reference=True, driving_image:np.ndarray=None, crop_driving=True, seed:int=20, num_inference_steps=100, guidance_scale=3.0, prompt='', mixed_precision=False) -> np.ndarray:
     """
@@ -34,11 +34,13 @@ def reenact_img(reference_image:np.ndarray=None, crop_reference=True, driving_im
     b = time.time()
 
     # image captioning
-    if prompt == '':
+    if prompt == '' and AUTO_CAPTIONING:
         ref_caption = predict_img_caption(ref_results["img"])
         drive_caption = predict_img_caption(drive_results["img"])
         prompt = naive_caption_reenactment(ref_caption, drive_caption, raise_error=True)
         # we recommend to use chatgpt_prompt_reenactment (see joker/prior/data/preprocess/chatgpt_prompt_reenactment) but since that requires a paid chatgpt api license, we use the naive implementation by default
+    else:
+        pass
 
     c = time.time()
 
@@ -72,6 +74,11 @@ def init_joker_prior():
         joker_prior.to(device).eval()
 
 if __name__ == "__main__":
+    parser = ArgumentParser()
+    parser.add_argument('--autocaptioning', action='store_true')
+    args = parser.parse_args()
+    AUTO_CAPTIONING = args.autocaptioning
+
     demo = gr.Interface(
         title='Joker: 2D Diffusion Prior Demo',
         description='This demo lets you play around with the 2D diffusion prior of the 3DV paper \'Joker: Conditional 3D Head Synthesis with Extreme Facial Expressions\'. You can use this model to transfer an expression from a driving image to the subject visible in the reference image. For more details, please visit our project webpage: https://malteprinzler.github.io/projects/joker',
@@ -84,7 +91,7 @@ if __name__ == "__main__":
             gr.Slider(0,1000, 0, step=1),
             gr.Slider(0, 200, 25, step=1),
             gr.Slider(0, 20, 3.0, step=0.1),
-            gr.Textbox('', placeholder='e.g. \'a man looking very angry\' (Optional: if not specified, will be extracted from driving image)'),
+            gr.Textbox('', placeholder='e.g. \'a man looking very angry\'' + (' (Optional: if not specified, will be extracted from driving image)' if AUTO_CAPTIONING else '')),
             gr.Checkbox(True, label='use mixed precision (speeding up the inference process while causing negligible quality reduction)')
         ],
         outputs=[gr.Image(height=512, width=512)],
@@ -173,5 +180,5 @@ if __name__ == "__main__":
         ]
     )
 
-
-    demo.launch(share=True)
+    # demo.launch(share=True)
+    demo.launch(server_name="0.0.0.0", server_port=7860)
