@@ -26,17 +26,17 @@ download the preprocessed `nerfstudio_ckpts.zip` from <a href='https://keeper.mp
 To visualize one of our prepared nerfstudio checkpoints run any of the following
     
     conda activate nerfstudio
-    python demo/distillation_nerfstudio/viewer.py --load-config assets/joker/nerfstudio_ckpts/000/nerfacto/2025-01-27_185946/config.yml
-    python demo/distillation_nerfstudio/viewer.py --load-config assets/joker/nerfstudio_ckpts/001/nerfacto/2025-01-27_185946/config.yml
-    python demo/distillation_nerfstudio/viewer.py --load-config assets/joker/nerfstudio_ckpts/002/nerfacto/2025-01-27_185946/config.yml
-    python demo/distillation_nerfstudio/viewer.py --load-config assets/joker/nerfstudio_ckpts/003/nerfacto/2025-01-27_185946/config.yml
-    python demo/distillation_nerfstudio/viewer.py --load-config assets/joker/nerfstudio_ckpts/004/nerfacto/2025-01-27_185946/config.yml
-    python demo/distillation_nerfstudio/viewer.py --load-config assets/joker/nerfstudio_ckpts/005/nerfacto/2025-01-27_185946/config.yml
-    python demo/distillation_nerfstudio/viewer.py --load-config assets/joker/nerfstudio_ckpts/006/nerfacto/2025-01-27_185946/config.yml
-    python demo/distillation_nerfstudio/viewer.py --load-config assets/joker/nerfstudio_ckpts/007/nerfacto/2025-01-27_185946/config.yml
-    python demo/distillation_nerfstudio/viewer.py --load-config assets/joker/nerfstudio_ckpts/008/nerfacto/2025-01-27_185946/config.yml
-    python demo/distillation_nerfstudio/viewer.py --load-config assets/joker/nerfstudio_ckpts/009/nerfacto/2025-01-27_185946/config.yml
-    python demo/distillation_nerfstudio/viewer.py --load-config assets/joker/nerfstudio_ckpts/010/nerfacto/2025-01-27_185946/config.yml
+    python demo/distillation_nerfstudio/viewer.py --load-config assets/joker/nerfstudio_ckpts/000/nerfacto/2025-01-31_110250/config.yml
+    python demo/distillation_nerfstudio/viewer.py --load-config assets/joker/nerfstudio_ckpts/001/nerfacto/2025-01-31_110303/config.yml
+    python demo/distillation_nerfstudio/viewer.py --load-config assets/joker/nerfstudio_ckpts/002/nerfacto/2025-01-31_110306/config.yml
+    python demo/distillation_nerfstudio/viewer.py --load-config assets/joker/nerfstudio_ckpts/003/nerfacto/2025-01-31_110306/config.yml
+    python demo/distillation_nerfstudio/viewer.py --load-config assets/joker/nerfstudio_ckpts/004/nerfacto/2025-01-31_110307/config.yml
+    python demo/distillation_nerfstudio/viewer.py --load-config assets/joker/nerfstudio_ckpts/005/nerfacto/2025-01-31_110306/config.yml
+    python demo/distillation_nerfstudio/viewer.py --load-config assets/joker/nerfstudio_ckpts/006/nerfacto/2025-01-31_110303/config.yml
+    python demo/distillation_nerfstudio/viewer.py --load-config assets/joker/nerfstudio_ckpts/007/nerfacto/2025-01-31_110306/config.yml
+    python demo/distillation_nerfstudio/viewer.py --load-config assets/joker/nerfstudio_ckpts/008/nerfacto/2025-01-31_110306/config.yml
+    python demo/distillation_nerfstudio/viewer.py --load-config assets/joker/nerfstudio_ckpts/009/nerfacto/2025-01-31_110301/config.yml
+    python demo/distillation_nerfstudio/viewer.py --load-config assets/joker/nerfstudio_ckpts/010/nerfacto/2025-01-31_110306/config.yml
 
 
 ### generating the target images for nerfstudio optimization
